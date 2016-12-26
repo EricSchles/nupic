@@ -130,11 +130,11 @@ class Features(object):
     Returns a list of all known features (essentially the contents of feature_list.py)
     '''
     for feature in FEATURES_LIST:
-      print feature['name'] + '\t\t' + feature['description']
+      print((feature['name'] + '\t\t' + feature['description']))
 
   @staticmethod
   def getAllGroups():
     '''
     Returns a list of all known feature groups
     '''
-    return [group for group, features in GROUPS.iteritems()]
+    return [group for group, features in list(GROUPS.items())]

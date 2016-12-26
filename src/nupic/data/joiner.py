@@ -88,7 +88,7 @@ class WeatherJoiner(object):
       # We'll put the joined datasets in the same folder as the originals
       outputPath = os.path.join(outputDir, outputFile)
 
-      print 'Now writing to: ' + outputPath
+      print(('Now writing to: ' + outputPath))
 
       # Keep the dict keys the same as the input dict
       joinedDatasets[key] = outputPath
@@ -125,12 +125,12 @@ class WeatherJoiner(object):
           # Look up the lat/long for this address and store it
           # print "Getting lat/long for address:"
           # print address
-          lat, long = self.g.getLatLong(address)
-          addressCache[address] = (lat, long)
+          lat, int = self.g.getLatLong(address)
+          addressCache[address] = (lat, int)
           # Also reset the range on the WeatherProvider for the new address
           self.w.setRange(0)
         else:
-          lat, long = addressCache[address]
+          lat, int = addressCache[address]
 
         # This is ugly, but we have to deal with the fact that the closest
         # station may not have complete records for the time period we're
@@ -138,7 +138,7 @@ class WeatherJoiner(object):
         range = 1
         while True:
           try:
-            recordsDict = self.w.getRecords(lat, long, date)
+            recordsDict = self.w.getRecords(lat, int, date)
             # We found a good station so kill the search loop
             break
           except LookupError:
@@ -176,8 +176,8 @@ class WeatherJoiner(object):
   def _updateHeaders(self, newHeaders, inputFileHandle, outputFileHandle):
     # We need to deal with the first three header rows and update them with
     # the requested weather data
-    for i in xrange(1,4): # Screw zero indexing!
-      headerLine = inputFileHandle.next()
+    for i in range(1,4): # Screw zero indexing!
+      headerLine = next(inputFileHandle)
       for type in newHeaders:
         # Header row one
         if i == 1:

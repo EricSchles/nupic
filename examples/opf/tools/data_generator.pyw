@@ -20,7 +20,7 @@
 # ----------------------------------------------------------------------
 # Author: Surabhi Gupta
 
-from Tkinter import *
+from tkinter import *
 import math
 from nupic.data.generators import data_generator
 from nupic.data.generators import distributions
@@ -100,7 +100,7 @@ class DataGeneratorApp():
 
 
   def buttonReleaseCallback(self, event):
-    if (self.lastx, self.lasty)<>(None, None):
+    if (self.lastx, self.lasty)!=(None, None):
       self._createLine(self.lastx, self.lasty, self.lastx, self.height*8.5/9)
       self._createLine(self.x, self.lasty, self.x, self.y)
 
@@ -111,7 +111,7 @@ class DataGeneratorApp():
     str = "mouse at x=%d  y=%d" % (self.x, self.y)
     self.master.title(str)
     
-    if (self.lastx, self.lasty)<>(None, None):
+    if (self.lastx, self.lasty)!=(None, None):
       line = self._createLine(self.lastx, self.lasty, self.x, self.y)
       self.dg.generateRecord([self.x, self.y])
 
@@ -130,7 +130,7 @@ class DataGeneratorApp():
     self.lastx, self.lasty = self.x, self.y
     self.x, self.y=event.x, event.y
           
-    if (self.lastx, self.lasty)<>(None, None):
+    if (self.lastx, self.lasty)!=(None, None):
       self._createLine(self.lastx, self.lasty, self.lastx, self.height*8.5/9)
       self._createLine(self.x, self.lasty, self.x, self.y) 
 
@@ -228,7 +228,7 @@ class DataGeneratorApp():
     """ The data points that constitute a waveform in the range (0, 1) are
     scaled to the height of the window
     """
-    for i in xrange(len(records)):
+    for i in range(len(records)):
       #records[i]=records[i]*(self.height*(8.4/9)*0.5)
       records[i]=records[i]*(self.height*(8.4/9))
     return records

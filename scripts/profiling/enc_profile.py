@@ -42,7 +42,7 @@ def profileEnc(maxValue, nRuns):
     encScalar.encode(d)
     encRDSE.encode(d)
 
-  print "Scalar n=",encScalar.n," RDSE n=",encRDSE.n
+  print(("Scalar n=",encScalar.n," RDSE n=",encRDSE.n))
 
 
 

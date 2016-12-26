@@ -64,7 +64,7 @@ nupic.support.imagesearch
 Contains functions for searching for images on the web and downloading them.
 """
 
-from __future__ import with_statement
+
 
 # Standard imports
 import os
@@ -75,13 +75,13 @@ import logging.config
 import logging.handlers
 from platform import python_version
 import struct
-from StringIO import StringIO
+from io import StringIO
 import time
 import traceback
 
 from pkg_resources import resource_string, resource_filename
 
-from configuration import Configuration
+from .configuration import Configuration
 from nupic.support.fshelpers import makeDirectoryFromAbsolutePath
 
 
@@ -164,9 +164,9 @@ def title(s=None, additional='', stream=sys.stdout, frame='-'):
       s = class_name + '.' + callable_name
   lines = (s + additional).split('\n')
   length = max(len(line) for line in lines)
-  print >> stream, '-' * length
-  print >> stream, s + additional
-  print >> stream, '-' * length
+  print('-' * length, file=stream)
+  print(s + additional, file=stream)
+  print('-' * length, file=stream)
 
 
 
@@ -381,7 +381,7 @@ def initLogging(verbose=False, console='stdout', consoleLevel='DEBUG'):
   global gLoggingInitialized
   if gLoggingInitialized:
     if verbose:
-      print >> sys.stderr, "Logging already initialized, doing nothing."
+      print("Logging already initialized, doing nothing.", file=sys.stderr)
     return
   
   consoleStreamMappings = {
@@ -392,7 +392,7 @@ def initLogging(verbose=False, console='stdout', consoleLevel='DEBUG'):
   consoleLogLevels = ['DEBUG', 'INFO', 'WARNING', 'WARN', 'ERROR', 'CRITICAL',
                       'FATAL']
   
-  assert console is None or console in consoleStreamMappings.keys(), (
+  assert console is None or console in list(consoleStreamMappings.keys()), (
     'Unexpected console arg value: %r') % (console,)
   
   assert consoleLevel in consoleLogLevels, (
@@ -409,8 +409,8 @@ def initLogging(verbose=False, console='stdout', consoleLevel='DEBUG'):
 
   # Load in the logging configuration file
   if verbose:
-    print >> sys.stderr, (
-      "Using logging configuration file: %s") % (configFilePath)
+    print((
+      "Using logging configuration file: %s") % (configFilePath), file=sys.stderr)
 
   # This dict will hold our replacement strings for logging configuration
   replacements = dict()
@@ -470,7 +470,7 @@ def initLogging(verbose=False, console='stdout', consoleLevel='DEBUG'):
 
   for lineNum, line in enumerate(loggingFileContents.splitlines()):
     if "$$" in line:
-      for (key, value) in replacements.items():
+      for (key, value) in list(replacements.items()):
         line = line.replace(key, value)
 
     # If there is still a replacement string in the line, we're missing it
@@ -514,7 +514,7 @@ def _genLoggingFilePath():
     'numenta-logs-%s' % (os.environ['USER'],),
     appName))
   appLogFileName = '%s-%s-%s.log' % (
-    appName, long(time.mktime(time.gmtime())), os.getpid())
+    appName, int(time.mktime(time.gmtime())), os.getpid())
   return os.path.join(appLogDir, appLogFileName)
   
   
@@ -553,15 +553,15 @@ def enableLoggingErrorDebugging():
   TypeError: not all arguments converted during string formatting
   """
   
-  print >> sys.stderr, ("WARNING")
-  print >> sys.stderr, ("WARNING: "
+  print(("WARNING"), file=sys.stderr)
+  print(("WARNING: "
     "nupic.support.enableLoggingErrorDebugging() was "
     "called to install a debugging patch into all logging handlers that "
     "will cause the program to fail if a logging exception occurrs; this "
     "call is for debugging only and MUST be removed before checking in code "
     "into production system. Caller: %s") % (
-    traceback.format_stack(),)
-  print >> sys.stderr, ("WARNING")
+    traceback.format_stack(),), file=sys.stderr)
+  print(("WARNING"), file=sys.stderr)
   
   def handleErrorPatch(*args, **kwargs):
     if logging.raiseExceptions:

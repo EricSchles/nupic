@@ -49,7 +49,7 @@ def main(expLocation):
       continue
     history.append((time.time() - start, mem))
 
-  print 'Max memory: ', max([a[1] for a in history])
+  print(('Max memory: ', max([a[1] for a in history])))
 
 
 

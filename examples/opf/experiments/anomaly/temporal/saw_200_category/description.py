@@ -349,7 +349,7 @@ tasks = [
         {  
           'columns': ['*'],
           'info': 'my simple dataset',
-          'source': u'file://'+os.path.join(os.path.dirname(__file__), 'data.csv'),
+          'source': 'file://'+os.path.join(os.path.dirname(__file__), 'data.csv'),
         }
       ],
       

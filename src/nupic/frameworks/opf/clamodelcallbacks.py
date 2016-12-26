@@ -26,7 +26,7 @@
 import os
 
 from nupic.support.fshelpers import makeDirectoryFromAbsolutePath
-from clamodel import CLAModel
+from .clamodel import CLAModel
 
 
 

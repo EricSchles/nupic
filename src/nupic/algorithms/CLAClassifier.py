@@ -152,7 +152,7 @@ class BitHistory(object):
 
     self._stats[bucketIdx] = dc
     if self._classifier.verbosity >= 2:
-      print "updated DC for %s, bucket %d to %f" % (self._id, bucketIdx, dc)
+      print(("updated DC for %s, bucket %d to %f" % (self._id, bucketIdx, dc)))
 
 
   def infer(self, votes):
@@ -177,7 +177,7 @@ class BitHistory(object):
     if total > 0:
       votes /= total
     if self._classifier.verbosity >= 2:
-      print "bucket votes for %s:" % (self._id), _pFormatArray(votes)
+      print(("bucket votes for %s:" % (self._id), _pFormatArray(votes)))
 
 
   def __getstate__(self):
@@ -193,9 +193,9 @@ class BitHistory(object):
     if version == 0:
       stats = state.pop("_stats")
       assert isinstance(stats, dict)
-      maxBucket = max(stats.iterkeys())
+      maxBucket = max(stats.keys())
       self._stats = array.array("f", itertools.repeat(0.0, maxBucket + 1))
-      for (index, value) in stats.iteritems():
+      for (index, value) in list(stats.items()):
         self._stats[index] = value
     elif version == 1:
       state.pop("_updateDutyCycles", None)
@@ -205,7 +205,7 @@ class BitHistory(object):
       raise Exception("Error while deserializing %s: Invalid version %s"
                       % (self.__class__, version))
 
-    for (attr, value) in state.iteritems():
+    for (attr, value) in list(state.items()):
       setattr(self, attr, value)
 
     self._version = BitHistory.__VERSION__
@@ -372,11 +372,11 @@ class CLAClassifier(object):
     self._learnIteration = recordNum - self._recordNumMinusLearnIteration
 
     if self.verbosity >= 1:
-      print "\n%s: compute" % g_debugPrefix
-      print "  recordNum:", recordNum
-      print "  learnIteration:", self._learnIteration
-      print "  patternNZ (%d):" % len(patternNZ), patternNZ
-      print "  classificationIn:", classification
+      print(("\n%s: compute" % g_debugPrefix))
+      print(("  recordNum:", recordNum))
+      print(("  learnIteration:", self._learnIteration))
+      print(("  patternNZ (%d):" % len(patternNZ), patternNZ))
+      print(("  classificationIn:", classification))
 
     # Store pattern in our history
     self._patternNZHistory.append((self._learnIteration, patternNZ))
@@ -455,17 +455,17 @@ class CLAClassifier(object):
     # ------------------------------------------------------------------------
     # Verbose print
     if infer and self.verbosity >= 1:
-      print "  inference: combined bucket likelihoods:"
-      print "    actual bucket values:", retval["actualValues"]
-      for (nSteps, votes) in retval.items():
+      print("  inference: combined bucket likelihoods:")
+      print(("    actual bucket values:", retval["actualValues"]))
+      for (nSteps, votes) in list(retval.items()):
         if nSteps == "actualValues":
           continue
-        print "    %d steps: " % (nSteps), _pFormatArray(votes)
+        print(("    %d steps: " % (nSteps), _pFormatArray(votes)))
         bestBucketIdx = votes.argmax()
-        print ("      most likely bucket idx: "
+        print(("      most likely bucket idx: "
                "%d, value: %s" % (bestBucketIdx,
-                                  retval["actualValues"][bestBucketIdx]))
-      print
+                                  retval["actualValues"][bestBucketIdx])))
+      print()
 
     return retval
   
@@ -594,14 +594,14 @@ class CLAClassifier(object):
     classifier._patternNZHistory = deque(maxlen=max(classifier.steps) + 1)
     patternNZHistoryProto = proto.patternNZHistory
     learnIteration = classifier._learnIteration - len(patternNZHistoryProto) + 1
-    for i in xrange(len(patternNZHistoryProto)):
+    for i in range(len(patternNZHistoryProto)):
       classifier._patternNZHistory.append((learnIteration,
                                            list(patternNZHistoryProto[i])))
       learnIteration += 1
 
     classifier._activeBitHistory = dict()
     activeBitHistoryProto = proto.activeBitHistory
-    for i in xrange(len(activeBitHistoryProto)):
+    for i in range(len(activeBitHistoryProto)):
       stepBitHistories = activeBitHistoryProto[i]
       nSteps = stepBitHistories.steps
       for indexBitHistoryProto in stepBitHistories.bitHistories:
@@ -626,7 +626,7 @@ class CLAClassifier(object):
 
   def write(self, proto):
     stepsProto = proto.init("steps", len(self.steps))
-    for i in xrange(len(self.steps)):
+    for i in range(len(self.steps)):
       stepsProto[i] = self.steps[i]
 
     proto.alpha = self.alpha
@@ -645,7 +645,7 @@ class CLAClassifier(object):
     if len(self._activeBitHistory) > 0:
       for nSteps in self.steps:
         stepBitHistory = {bit: self._activeBitHistory[(bit, step)]
-                          for (bit, step) in self._activeBitHistory.keys()
+                          for (bit, step) in list(self._activeBitHistory.keys())
                           if step == nSteps}
         stepBitHistoryProto = activeBitHistoryProtos[i]
         stepBitHistoryProto.steps = nSteps
@@ -663,7 +663,7 @@ class CLAClassifier(object):
     proto.maxBucketIdx = self._maxBucketIdx
 
     actualValuesProto = proto.init("actualValues", len(self._actualValues))
-    for i in xrange(len(self._actualValues)):
+    for i in range(len(self._actualValues)):
       if self._actualValues[i] is not None:
         actualValuesProto[i] = self._actualValues[i]
       else:

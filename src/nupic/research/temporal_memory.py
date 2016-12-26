@@ -30,6 +30,7 @@ from operator import mul
 from nupic.bindings.math import Random
 from nupic.research.connections import Connections, binSearch
 from nupic.support.group_by import groupby2
+from functools import reduce
 
 EPSILON = 0.00001 # constant error threshold to check equality of permanences to
                   # other floats
@@ -272,13 +273,13 @@ class TemporalMemory(object):
 
     activeSegments = (
       self.connections.segmentForFlatIdx(i)
-      for i in xrange(len(numActiveConnected))
+      for i in range(len(numActiveConnected))
       if numActiveConnected[i] >= self.activationThreshold
     )
 
     matchingSegments = (
       self.connections.segmentForFlatIdx(i)
-      for i in xrange(len(numActivePotential))
+      for i in range(len(numActivePotential))
       if numActivePotential[i] >= self.minThreshold
     )
 
@@ -377,7 +378,7 @@ class TemporalMemory(object):
     """
 
     start = self.cellsPerColumn * column
-    cellsForColumn = xrange(start, start + self.cellsPerColumn)
+    cellsForColumn = range(start, start + self.cellsPerColumn)
 
     return self._burstColumn(
       self.connections, self._random, column, columnMatchingSegments,
@@ -751,7 +752,7 @@ class TemporalMemory(object):
 
     start = self.cellsPerColumn * column
     end = start + self.cellsPerColumn
-    return range(start, end)
+    return list(range(start, end))
 
 
   def numberOfColumns(self):
@@ -1086,7 +1087,7 @@ class TemporalMemory(object):
     tm.activeSegments = []
     tm.matchingSegments = []
 
-    for i in xrange(len(proto.activeSegmentOverlaps)):
+    for i in range(len(proto.activeSegmentOverlaps)):
       protoSegmentOverlap = proto.activeSegmentOverlaps[i]
 
       segment = tm.connections.getSegment(protoSegmentOverlap.cell,
@@ -1096,7 +1097,7 @@ class TemporalMemory(object):
       overlap = protoSegmentOverlap.overlap
       tm.numActiveConnectedSynapsesForSegment[segment.flatIdx] = overlap
 
-    for i in xrange(len(proto.matchingSegmentOverlaps)):
+    for i in range(len(proto.matchingSegmentOverlaps)):
       protoSegmentOverlap = proto.matchingSegmentOverlaps[i]
 
       segment = tm.connections.getSegment(protoSegmentOverlap.cell,

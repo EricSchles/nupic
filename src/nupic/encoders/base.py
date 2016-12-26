@@ -203,7 +203,7 @@ class Encoder(object):
     if isinstance(obj, dict):
       if not fieldName in obj:
         knownFields = ", ".join(
-          key for key in obj.keys() if not key.startswith("_")
+          key for key in list(obj.keys()) if not key.startswith("_")
         )
         raise ValueError(
           "Unknown field name '%s' in input record. Known fields are '%s'.\n"
@@ -385,7 +385,7 @@ class Encoder(object):
 
     # Find which field it's in
     description = self.getDescription() + [("end", self.getWidth())]
-    for i in xrange(len(description)):
+    for i in range(len(description)):
       (name, offset) = description[i]
       if (name == fieldName):
         break
@@ -411,7 +411,7 @@ class Encoder(object):
     # Find which field it's in
     (prevFieldName, prevFieldOffset) = (None, None)
     description = self.getDescription()
-    for i in xrange(len(description)):
+    for i in range(len(description)):
       (name, offset) = description[i]
       if formatted:
         offset = offset + i
@@ -441,9 +441,9 @@ class Encoder(object):
 
     @param prefix printed before the header if specified
     """
-    print prefix,
+    print(prefix, end=' ')
     description = self.getDescription() + [("end", self.getWidth())]
-    for i in xrange(len(description) - 1):
+    for i in range(len(description) - 1):
       name = description[i][0]
       width = description[i+1][1] - description[i][1]
       formatStr = "%%-%ds |" % width
@@ -451,9 +451,9 @@ class Encoder(object):
         pname = name[0:width]
       else:
         pname = name
-      print formatStr % pname,
-    print
-    print prefix, "-" * (self.getWidth() + (len(description) - 1)*3 - 1)
+      print(formatStr % pname, end=' ')
+    print()
+    print(prefix, "-" * (self.getWidth() + (len(description) - 1)*3 - 1))
 
 
   def pprint(self, output, prefix=""):
@@ -463,13 +463,13 @@ class Encoder(object):
     @param output to print
     @param prefix printed before the header if specified
     """
-    print prefix,
+    print(prefix, end=' ')
     description = self.getDescription() + [("end", self.getWidth())]
-    for i in xrange(len(description) - 1):
+    for i in range(len(description) - 1):
       offset = description[i][1]
       nextoffset = description[i+1][1]
-      print "%s |" % bitsToString(output[offset:nextoffset]),
-    print
+      print("%s |" % bitsToString(output[offset:nextoffset]), end=' ')
+    print()
 
 
   def decode(self, encoded, parentFieldName=''):
@@ -546,7 +546,7 @@ class Encoder(object):
 
     if self.encoders is not None:
       # Merge decodings of all child encoders together
-      for i in xrange(len(self.encoders)):
+      for i in range(len(self.encoders)):
 
         # Get the encoder and the encoded output
         (name, encoder, offset) = self.encoders[i]
@@ -639,7 +639,7 @@ class Encoder(object):
     # Concatenate the results from bucketInfo on each child encoder
     retVals = []
     bucketOffset = 0
-    for i in xrange(len(self.encoders)):
+    for i in range(len(self.encoders)):
       (name, encoder, offset) = self.encoders[i]
 
       if encoder.encoders is not None:
@@ -694,7 +694,7 @@ class Encoder(object):
 
     # Concatenate the results from topDownCompute on each child encoder
     retVals = []
-    for i in xrange(len(self.encoders)):
+    for i in range(len(self.encoders)):
       (name, encoder, offset) = self.encoders[i]
 
       if i < len(self.encoders)-1:
@@ -793,7 +793,7 @@ class Encoder(object):
     description = self.getDescription() + [("end", self.getWidth())]
 
     # copy the data, but put one blank in between each field
-    for i in xrange(len(description) - 1):
+    for i in range(len(description) - 1):
       start = description[i][1]
       end = description[i+1][1]
       # print "Copying: %s" % inarray[start:end]

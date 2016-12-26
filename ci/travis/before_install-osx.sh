@@ -31,9 +31,9 @@ pip install --upgrade --ignore-installed pip
 
 pip install wheel
 
-python -c 'import pip; print "pip version=", pip.__version__'
-python -c 'import setuptools; print "setuptools version=", setuptools.__version__'
-python -c 'import wheel; print "wheel version=", wheel.__version__'
+python -c 'import pip; print("pip version=", pip.__version__)'
+python -c 'import setuptools; print("setuptools version=", setuptools.__version__)'
+python -c 'import wheel; print("wheel version=", wheel.__version__)'
 
 # Install and start MySQL on OSX
 echo ">>> brew install mysql"

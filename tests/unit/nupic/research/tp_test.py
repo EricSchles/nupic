@@ -22,7 +22,7 @@
 """Tests for the Python implementation of the temporal pooler."""
 
 import csv
-import cPickle as pickle
+import pickle as pickle
 import itertools
 import os
 import random
@@ -61,7 +61,7 @@ class TPTest(unittest.TestCase):
   def testCheckpointLearned(self):
     # Create a model and give it some inputs to learn.
     tp1 = TP(numberOfCols=100, cellsPerColumn=12, verbosity=VERBOSITY)
-    sequences = [self.generateSequence() for _ in xrange(5)]
+    sequences = [self.generateSequence() for _ in range(5)]
     train = list(itertools.chain.from_iterable(sequences[:3]))
     for bottomUpInput in train:
       if bottomUpInput is None:
@@ -95,7 +95,7 @@ class TPTest(unittest.TestCase):
   def testCheckpointMiddleOfSequence(self):
     # Create a model and give it some inputs to learn.
     tp1 = TP(numberOfCols=100, cellsPerColumn=12, verbosity=VERBOSITY)
-    sequences = [self.generateSequence() for _ in xrange(5)]
+    sequences = [self.generateSequence() for _ in range(5)]
     train = list(itertools.chain.from_iterable(sequences[:3] +
                                                [sequences[3][:5]]))
     for bottomUpInput in train:
@@ -145,13 +145,13 @@ class TPTest(unittest.TestCase):
 
     i = 1
     for r in records[:250]:
-      print i
+      print(i)
       i += 1
       output1 = tp1.compute(r, True, True)
       output2 = tp2.compute(r, True, True)
       self.assertTrue(numpy.array_equal(output1, output2))
 
-    print 'Serializing and deserializing models.'
+    print('Serializing and deserializing models.')
 
     savePath1 = os.path.join(self._tmpDir, 'tp1.bin')
     tp1.saveToFile(savePath1)
@@ -167,7 +167,7 @@ class TPTest(unittest.TestCase):
     self.assertTPsEqual(tp2, tp4)
 
     for r in records[250:]:
-      print i
+      print(i)
       i += 1
       out1 = tp1.compute(r, True, True)
       out2 = tp2.compute(r, True, True)
@@ -197,7 +197,7 @@ class TPTest(unittest.TestCase):
   def generateSequence(n=10, numCols=100, minOnes=21, maxOnes=25):
     """Generates a sequence of n patterns."""
     return [None] + [TPTest.generatePattern(numCols, minOnes, maxOnes)
-                     for _ in xrange(n)]
+                     for _ in range(n)]
 
 
   @staticmethod
@@ -213,7 +213,7 @@ class TPTest(unittest.TestCase):
     assert maxOnes < numCols
 
     nOnes = random.randint(minOnes, maxOnes)
-    ind = random.sample(xrange(numCols), nOnes)
+    ind = random.sample(list(range(numCols)), nOnes)
     x = numpy.zeros(numCols, dtype='float32')
     x[ind] = 1
 

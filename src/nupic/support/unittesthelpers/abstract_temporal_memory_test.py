@@ -27,9 +27,7 @@ from nupic.research.monitor_mixin.temporal_memory_monitor_mixin import (
 
 
 
-class AbstractTemporalMemoryTest(object):
-  __metaclass__ = ABCMeta
-
+class AbstractTemporalMemoryTest(object, metaclass=ABCMeta):
   VERBOSITY = 1
 
   @abstractmethod

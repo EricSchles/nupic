@@ -45,12 +45,12 @@ def printProgressBar(completed, total, nDots):
   numberOfDots = lambda n: (n * nDots) // total
   completedDots = numberOfDots(completed)
   if completedDots != numberOfDots(completed - 1):
-    print "\r|" + ("." * completedDots) + (" " * (nDots - completedDots)) + "|",
+    print("\r|" + ("." * completedDots) + (" " * (nDots - completedDots)) + "|", end=' ')
     sys.stdout.flush()
 
 
 def clearProgressBar(nDots):
-  print "\r" + (" " * (nDots + 2))
+  print("\r" + (" " * (nDots + 2)))
 
 
 class TemporalMemoryPerformanceBenchmark(object):
@@ -70,7 +70,7 @@ class TemporalMemoryPerformanceBenchmark(object):
   def _createInstances(self, cellsPerColumn):
     instances = []
 
-    for i in xrange(len(self.contestants)):
+    for i in range(len(self.contestants)):
       (constructor,
        paramsFn,
        computeFn,
@@ -95,7 +95,7 @@ class TemporalMemoryPerformanceBenchmark(object):
     increment = 4
     sequenceLength = 25
     sequence = (i % (sequenceLength * 4)
-                for i in xrange(0, duration * increment, increment))
+                for i in range(0, duration * increment, increment))
     t = 0
 
     encodedValue = numpy.zeros(2048, dtype=numpy.int32)
@@ -104,7 +104,7 @@ class TemporalMemoryPerformanceBenchmark(object):
       scalarEncoder.encodeIntoArray(value, output=encodedValue)
       activeBits = encodedValue.nonzero()[0]
 
-      for i in xrange(len(self.contestants)):
+      for i in range(len(self.contestants)):
         tmInstance = instances[i]
         computeFn = self.contestants[i][2]
 
@@ -122,7 +122,7 @@ class TemporalMemoryPerformanceBenchmark(object):
     clearProgressBar(50)
 
     results = []
-    for i in xrange(len(self.contestants)):
+    for i in range(len(self.contestants)):
       name = self.contestants[i][3]
       results.append((name,
                       times[i],))
@@ -139,12 +139,12 @@ class TemporalMemoryPerformanceBenchmark(object):
     t = 0
     duration = HOTGYM_LENGTH * repetitions
 
-    for _ in xrange(repetitions):
+    for _ in range(repetitions):
       with open(HOTGYM_PATH) as fin:
         reader = csv.reader(fin)
-        reader.next()
-        reader.next()
-        reader.next()
+        next(reader)
+        next(reader)
+        next(reader)
 
         encodedValue = numpy.zeros(2048, dtype=numpy.int32)
 
@@ -153,7 +153,7 @@ class TemporalMemoryPerformanceBenchmark(object):
           scalarEncoder.encodeIntoArray(value, output=encodedValue)
           activeBits = encodedValue.nonzero()[0]
 
-          for i in xrange(len(self.contestants)):
+          for i in range(len(self.contestants)):
             tmInstance = instances[i]
             computeFn = self.contestants[i][2]
 
@@ -167,7 +167,7 @@ class TemporalMemoryPerformanceBenchmark(object):
     clearProgressBar(50)
 
     results = []
-    for i in xrange(len(self.contestants)):
+    for i in range(len(self.contestants)):
       name = self.contestants[i][3]
       results.append((name,
                       times[i],))
@@ -186,12 +186,12 @@ class TemporalMemoryPerformanceBenchmark(object):
 
     encodedValue = numpy.zeros(2048, dtype=numpy.int32)
 
-    for _ in xrange(duration):
-      activeBits = random.sample(xrange(2048), 40)
+    for _ in range(duration):
+      activeBits = random.sample(range(2048), 40)
       encodedValue = numpy.zeros(2048, dtype=numpy.int32)
       encodedValue[activeBits] = 1
 
-      for i in xrange(len(self.contestants)):
+      for i in range(len(self.contestants)):
         tmInstance = instances[i]
         computeFn = self.contestants[i][2]
 
@@ -205,7 +205,7 @@ class TemporalMemoryPerformanceBenchmark(object):
     clearProgressBar(50)
 
     results = []
-    for i in xrange(len(self.contestants)):
+    for i in range(len(self.contestants)):
       name = self.contestants[i][3]
       results.append((name,
                       times[i],))
@@ -372,31 +372,31 @@ if __name__ == "__main__":
     assert name not in allResults
 
     if name in args.tests:
-      print "Test: %s" % description
+      print("Test: %s" % description)
       if args.pause:
-        raw_input("Press enter to continue. ")
+        input("Press enter to continue. ")
 
       results = testFn()
       allResults[name] = results
 
       for implDescription, t in sorted(results, key=lambda x: x[1]):
-        print "%s: %fs" % (implDescription, t)
-      print
-      print
+        print("%s: %fs" % (implDescription, t))
+      print()
+      print()
 
   if args.output is not None and len(allResults) > 0:
-    print "Writing results to",args.output
-    print
+    print("Writing results to",args.output)
+    print()
     with open(args.output, "wb") as csvFile:
       writer = csv.writer(csvFile)
-      firstTestName, firstResults = allResults.iteritems().next()
+      firstTestName, firstResults = next(iter(allResults.items()))
       orderedImplNames = (implName for implName, t in firstResults)
 
       firstRow = ["test"]
       firstRow.extend(orderedImplNames)
       writer.writerow(firstRow)
 
-      for testName, results in allResults.iteritems():
+      for testName, results in allResults.items():
         row = [testName]
         for implDescription, t in results:
           row.append(t)

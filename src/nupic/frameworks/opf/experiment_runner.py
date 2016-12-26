@@ -355,8 +355,8 @@ def reapVarArgsCallback(option, optStr, value, parser):
 
 def _reportCommandLineUsageErrorAndExit(parser, message):
   """Report usage error and exit program with error indication."""
-  print parser.get_usage()
-  print message
+  print((parser.get_usage()))
+  print(message)
   sys.exit(1)
 
 
@@ -407,10 +407,10 @@ def _runExperimentImpl(options, model=None):
 
   # Handle listTasks
   if options.privateOptions['listTasks']:
-    print "Available tasks:"
+    print("Available tasks:")
 
     for label in [t['taskLabel'] for t in experimentTasks]:
-      print "\t", label
+      print(("\t", label))
 
     return None
 
@@ -426,7 +426,7 @@ def _runExperimentImpl(options, model=None):
           newSerialization=newSerialization)
 
   elif model is not None:
-    print "Skipping creation of OPFExperiment instance: caller provided his own"
+    print("Skipping creation of OPFExperiment instance: caller provided his own")
   else:
     modelDescription = expIface.getModelDescription()
     model = ModelFactory.create(modelDescription)
@@ -444,7 +444,7 @@ def _runExperimentImpl(options, model=None):
   # Build the task list
 
   # Default task execution index list is in the natural list order of the tasks
-  taskIndexList = range(len(experimentTasks))
+  taskIndexList = list(range(len(experimentTasks)))
 
   customTaskExecutionLabelsList = options.privateOptions['taskLabels']
   if customTaskExecutionLabelsList:
@@ -462,8 +462,8 @@ def _runExperimentImpl(options, model=None):
     taskIndexList = [taskLabelsList.index(label) for label in
                      customTaskExecutionLabelsList]
 
-    print "#### Executing custom task list: %r" % [taskLabelsList[i] for
-                                                   i in taskIndexList]
+    print(("#### Executing custom task list: %r" % [taskLabelsList[i] for
+                                                   i in taskIndexList]))
 
   # Run all experiment tasks
   for taskIndex in taskIndexList:
@@ -563,27 +563,27 @@ def _printAvailableCheckpoints(experimentDir):
   checkpointParentDir = getCheckpointParentDir(experimentDir)
 
   if not os.path.exists(checkpointParentDir):
-    print "No available checkpoints."
+    print("No available checkpoints.")
     return
 
   checkpointDirs = [x for x in os.listdir(checkpointParentDir)
                     if _isCheckpointDir(os.path.join(checkpointParentDir, x))]
   if not checkpointDirs:
-    print "No available checkpoints."
+    print("No available checkpoints.")
     return
 
-  print "Available checkpoints:"
+  print("Available checkpoints:")
   checkpointList = [_checkpointLabelFromCheckpointDir(x)
                     for x in checkpointDirs]
 
   for checkpoint in sorted(checkpointList):
-    print "\t", checkpoint
+    print(("\t", checkpoint))
 
-  print
-  print "To start from a checkpoint:"
-  print "  python run_opf_experiment.py experiment --load <CHECKPOINT>"
-  print "For example, to start from the checkpoint \"MyCheckpoint\":"
-  print "  python run_opf_experiment.py experiment --load MyCheckpoint"
+  print()
+  print("To start from a checkpoint:")
+  print("  python run_opf_experiment.py experiment --load <CHECKPOINT>")
+  print("For example, to start from the checkpoint \"MyCheckpoint\":")
+  print("  python run_opf_experiment.py experiment --load MyCheckpoint")
 
 
 
@@ -673,7 +673,7 @@ class _TaskRunner(object):
       numIters = self.__task['iterationCount']
 
     if numIters >= 0:
-      iterTracker = iter(xrange(numIters))
+      iterTracker = iter(list(range(numIters)))
     else:
       iterTracker = iter(itertools.count())
 
@@ -701,7 +701,7 @@ class _TaskRunner(object):
 
       # Read next input record
       try:
-        inputRecord = self.__datasetReader.next()
+        inputRecord = next(self.__datasetReader)
       except StopIteration:
         break
 
@@ -831,7 +831,7 @@ class PeriodicActivityMgr(object):
       act =   self.Activity(repeating=req.repeating,
                             period=req.period,
                             cb=req.cb,
-                            iteratorHolder=[iter(xrange(req.period-1))])
+                            iteratorHolder=[iter(list(range(req.period-1)))])
       self.__activities.append(act)
 
 
@@ -852,7 +852,7 @@ class PeriodicActivityMgr(object):
       except StopIteration:
         act.cb()
         if act.repeating:
-          act.iteratorHolder[0] = iter(xrange(act.period-1))
+          act.iteratorHolder[0] = iter(list(range(act.period-1)))
         else:
           act.iteratorHolder[0] = None
 

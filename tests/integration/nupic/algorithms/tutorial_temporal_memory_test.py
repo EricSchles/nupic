@@ -31,9 +31,7 @@ from nupic.support.unittesthelpers.abstract_temporal_memory_test import Abstract
 
 
 
-class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
-  __metaclass__ = ABCMeta
-
+class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest, metaclass=ABCMeta):
   VERBOSITY = 1
 
   def getPatternMachine(self):
@@ -141,7 +139,7 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
 
     sequence = self.sequenceMachine.generateFromNumbers([0, 1])
 
-    for _ in xrange(7):
+    for _ in range(7):
       self.feedTM(sequence)
 
     self.feedTM(sequence, num=50)
@@ -155,7 +153,7 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
 
     sequence = self.sequenceMachine.generateFromNumbers([0, 1])
 
-    for _ in xrange(7):
+    for _ in range(7):
       self.feedTM(sequence)
 
     self.feedTM(sequence, num=100)
@@ -169,7 +167,7 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
     sequence *= 10
     sequence += [self.patternMachine.get(2), None]
 
-    for _ in xrange(4):
+    for _ in range(4):
       self.feedTM(sequence)
 
     self.feedTM(sequence, num=10)
@@ -181,10 +179,10 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
 
     sequence = [self.patternMachine.get(0)]
 
-    for _ in xrange(4):
+    for _ in range(4):
       self.feedTM(sequence)
 
-    for _ in xrange(2):
+    for _ in range(2):
       self.feedTM(sequence, num=10)
 
 
@@ -195,20 +193,20 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
   def setUp(self):
     super(TutorialTemporalMemoryTest, self).setUp()
 
-    print ("\n"
+    print((("\n"
            "======================================================\n"
            "Test: {0} \n"
            "{1}\n"
            "======================================================\n"
-    ).format(self.id(), self.shortDescription())
+    ).format(self.id(), self.shortDescription())))
 
 
   def init(self, *args, **kwargs):
     super(TutorialTemporalMemoryTest, self).init(*args, **kwargs)
 
-    print "Initialized new TM with parameters:"
-    print pprint.pformat(self._computeTMParams(kwargs.get("overrides")))
-    print
+    print("Initialized new TM with parameters:")
+    print((pprint.pformat(self._computeTMParams(kwargs.get("overrides")))))
+    print()
 
 
   def feedTM(self, sequence, learn=True, num=1):
@@ -217,9 +215,9 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
     super(TutorialTemporalMemoryTest, self).feedTM(
       sequence, learn=learn, num=num)
 
-    print self.tm.mmPrettyPrintTraces(self.tm.mmGetDefaultTraces(verbosity=2),
-                                    breakOnResets=self.tm.mmGetTraceResets())
-    print
+    print((self.tm.mmPrettyPrintTraces(self.tm.mmGetDefaultTraces(verbosity=2),
+                                    breakOnResets=self.tm.mmGetTraceResets())))
+    print()
 
     if learn:
       self._printConnections()
@@ -231,7 +229,7 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
 
   def _printConnections(self):
     # This is in a helper so that it can be overridden.
-    print self.tm.mmPrettyPrintConnections()
+    print((self.tm.mmPrettyPrintConnections()))
 
 
   def _showInput(self, sequence, learn=True, num=1):
@@ -240,9 +238,9 @@ class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest):
       verbosity=self.VERBOSITY)
     learnText = "(learning {0})".format("enabled" if learn else "disabled")
     numText = " [{0} times]".format(num) if num > 1 else ""
-    print "Feeding sequence {0}{1}:\n{2}".format(
-      learnText, numText, sequenceText)
-    print
+    print(("Feeding sequence {0}{1}:\n{2}".format(
+      learnText, numText, sequenceText)))
+    print()
 
 
 

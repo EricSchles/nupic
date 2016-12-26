@@ -162,7 +162,7 @@ def _createOPFNetwork(addSP = True, addTP = False):
   # ==========================================================================
   # Add the SP if requested
   if addSP:
-    print "Adding SPRegion"
+    print("Adding SPRegion")
     g_spRegionConfig['inputWidth'] = encoder.getWidth()
     n.addRegion("level1SP", "py.SPRegion", json.dumps(g_spRegionConfig))
 
@@ -178,7 +178,7 @@ def _createOPFNetwork(addSP = True, addTP = False):
   if addTP and addSP:
     # Add the TP on top of SP if requested
     # The input width of the TP is set to the column count of the SP
-    print "Adding TPRegion on top of SP"
+    print("Adding TPRegion on top of SP")
     g_tpRegionConfig['inputWidth'] = g_spRegionConfig['columnCount']
     n.addRegion("level1TP", "py.TPRegion", json.dumps(g_tpRegionConfig))
     n.link("level1SP", "level1TP", "UniformLink", "")
@@ -190,7 +190,7 @@ def _createOPFNetwork(addSP = True, addTP = False):
   elif addTP:
     # Add a lone TPRegion if requested
     # The input width of the TP is set to the encoder width
-    print "Adding TPRegion"
+    print("Adding TPRegion")
     g_tpRegionConfig['inputWidth'] = encoder.getWidth()
     n.addRegion("level1TP", "py.TPRegion", json.dumps(g_tpRegionConfig))
 
@@ -217,13 +217,13 @@ class OPFRegionTest(TestCaseBase):
     results.
     """
   
-    print "Creating network..."
+    print("Creating network...")
   
     netOPF = _createOPFNetwork()
     level1OPF = netOPF.regions['level1SP']
   
     # ==========================================================================
-    print "Training network for 500 iterations"
+    print("Training network for 500 iterations")
     level1OPF.setParameter('learningMode', 1)
     level1OPF.setParameter('inferenceMode', 0)
     netOPF.run(500)
@@ -234,7 +234,7 @@ class OPFRegionTest(TestCaseBase):
     # Save network and reload as a second instance. We need to reset the data
     # source for the unsaved network so that both instances start at the same
     # place
-    print "Saving and reload network"
+    print("Saving and reload network")
     _, tmpNetworkFilename = _setupTempDirectory("trained.nta")
     netOPF.save(tmpNetworkFilename)
     netOPF2 = Network(tmpNetworkFilename)
@@ -246,8 +246,8 @@ class OPFRegionTest(TestCaseBase):
     sensor.dataSource.setAutoRewind(True)
   
     # ==========================================================================
-    print "Running inference on the two networks for 100 iterations"
-    for _ in xrange(100):
+    print("Running inference on the two networks for 100 iterations")
+    for _ in range(100):
       netOPF2.run(1)
       netOPF.run(1)
       l1outputOPF2 = level1OPF2.getOutputData("bottomUpOut")
@@ -261,7 +261,7 @@ class OPFRegionTest(TestCaseBase):
   def testMaxEnabledPhase(self):
     """ Test maxEnabledPhase"""
   
-    print "Creating network..."
+    print("Creating network...")
   
     netOPF = _createOPFNetwork(addSP = True, addTP = True)
     netOPF.initialize()
@@ -273,21 +273,21 @@ class OPFRegionTest(TestCaseBase):
     tp.setParameter('learningMode', 0)
     tp.setParameter('inferenceMode', 0)
   
-    print "maxPhase,maxEnabledPhase = ", netOPF.maxPhase, \
-                                      netOPF.getMaxEnabledPhase()
+    print(("maxPhase,maxEnabledPhase = ", netOPF.maxPhase, \
+                                      netOPF.getMaxEnabledPhase()))
     self.assertEqual(netOPF.maxPhase, 2)
     self.assertEqual(netOPF.getMaxEnabledPhase(), 2)
 
-    print "Setting setMaxEnabledPhase to 1"
+    print("Setting setMaxEnabledPhase to 1")
     netOPF.setMaxEnabledPhase(1)
-    print "maxPhase,maxEnabledPhase = ", netOPF.maxPhase, \
-                                      netOPF.getMaxEnabledPhase()
+    print(("maxPhase,maxEnabledPhase = ", netOPF.maxPhase, \
+                                      netOPF.getMaxEnabledPhase()))
     self.assertEqual(netOPF.maxPhase, 2)
     self.assertEqual(netOPF.getMaxEnabledPhase(), 1)
 
     netOPF.run(1)
   
-    print "RUN SUCCEEDED"
+    print("RUN SUCCEEDED")
   
     # TODO: The following does not run and is probably flawed.
     """

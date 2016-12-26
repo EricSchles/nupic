@@ -54,7 +54,7 @@ _CLASS_ATTR_MAP = {
 }
 
 # Invert for fast lookup in MultiEncoder.read()
-_ATTR_CLASS_MAP = {value:key for key, value in _CLASS_ATTR_MAP.items()}
+_ATTR_CLASS_MAP = {value:key for key, value in list(_CLASS_ATTR_MAP.items())}
 
 
 
@@ -160,10 +160,10 @@ class MultiEncoder(Encoder):
         encoderName = fieldParams.pop('type')
         try:
           self.addEncoder(fieldName, eval(encoderName)(**fieldParams))
-        except TypeError, e:
-          print ("#### Error in constructing %s encoder. Possibly missing "
+        except TypeError as e:
+          print(("#### Error in constructing %s encoder. Possibly missing "
                 "some required constructor parameters. Parameters "
-                "that were provided are: %s" %  (encoderName, fieldParams))
+                "that were provided are: %s" %  (encoderName, fieldParams)))
           raise
 
 

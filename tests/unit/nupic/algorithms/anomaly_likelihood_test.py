@@ -44,7 +44,7 @@ def _sampleDistribution(params, numSamples, verbosity=0):
 
   :returns: A numpy array of samples.
   """
-  if params.has_key("name"):
+  if "name" in params:
     if params["name"] == "normal":
       samples = numpy.random.normal(loc=params["mean"],
                                     scale=math.sqrt(params["variance"]),
@@ -60,9 +60,9 @@ def _sampleDistribution(params, numSamples, verbosity=0):
     raise ValueError("Bad distribution params: " + str(params))
 
   if verbosity > 0:
-    print "\nSampling from distribution:", params
-    print "After estimation, mean=", numpy.mean(samples), \
-          "var=", numpy.var(samples), "stdev=", math.sqrt(numpy.var(samples))
+    print(("\nSampling from distribution:", params))
+    print(("After estimation, mean=", numpy.mean(samples), \
+          "var=", numpy.var(samples), "stdev=", math.sqrt(numpy.var(samples))))
   return samples
 
 

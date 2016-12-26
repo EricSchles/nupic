@@ -34,9 +34,9 @@ from pkg_resources import (
 try:
   pytestXdistAvailable = bool(get_distribution("pytest-xdist"))
 except DistributionNotFound:
-  print "ERROR: `pytest-xdist` is not installed.  Certain testing features" \
+  print("ERROR: `pytest-xdist` is not installed.  Certain testing features" \
     " are not available without it.  The complete list of python" \
-    " requirements can be found in requirements.txt."
+    " requirements can be found in requirements.txt.")
   sys.exit(1)
 
 

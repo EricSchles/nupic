@@ -54,7 +54,7 @@ def groupby2(*args):
   advanceList = []
 
   # populate above lists
-  for i in xrange(0, len(args), 2):
+  for i in range(0, len(args), 2):
     listn = args[i]
     fn = args[i + 1]
     if listn is not None:
@@ -69,10 +69,10 @@ def groupby2(*args):
   nextList = [None] * n
   # while all lists aren't exhausted walk through each group in order
   while True:
-    for i in xrange(n):
+    for i in range(n):
       if advanceList[i]:
         try:
-          nextList[i] = generatorList[i].next()
+          nextList[i] = next(generatorList[i])
         except StopIteration:
           nextList[i] = None
 
@@ -86,7 +86,7 @@ def groupby2(*args):
 
     # populate the tuple to return based on minKeyVal
     retGroups = [minKeyVal]
-    for i in xrange(n):
+    for i in range(n):
       if nextList[i] is not None and nextList[i][0] == minKeyVal:
         retGroups.append(nextList[i][1])
         advanceList[i] = True

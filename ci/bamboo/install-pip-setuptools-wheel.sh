@@ -43,6 +43,6 @@ python get-pip.py "$@" --ignore-installed \
   setuptools==${_SETUPTOOLS_VER} \
   wheel==${_WHEEL_VER}
 
-python -c 'import pip; print "pip version=", pip.__version__'
-python -c 'import setuptools; print "setuptools version=", setuptools.__version__'
-python -c 'import wheel; print "wheel version=", wheel.__version__'
+python -c 'import pip; print("pip version=", pip.__version__)'
+python -c 'import setuptools; print("setuptools version=", setuptools.__version__)'
+python -c 'import wheel; print("wheel version=", wheel.__version__)'

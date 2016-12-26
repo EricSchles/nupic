@@ -118,7 +118,7 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     expectedCats = ([0.0], [1.0], [0.0], [1.0], [0.0], [1.0], [0.0], [1.0],)
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       inferredCats = classifier.getOutputData("categoriesOut")
       self.assertSequenceEqual(expectedCats[i], inferredCats.tolist(),
@@ -200,7 +200,7 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     expectedCats = ([0.0], [1.0], [0.0], [1.0], [0.0], [1.0], [0.0], [1.0],)
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       inferredCats = classifier.getOutputData("categoriesOut")
       self.assertSequenceEqual(expectedCats[i], inferredCats.tolist(),

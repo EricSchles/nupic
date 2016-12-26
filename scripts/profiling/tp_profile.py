@@ -45,7 +45,7 @@ def profileTP(tpClass, tpDim, nRuns):
   # generate input data
   data = numpy.random.randint(0, 2, [tpDim, nRuns]).astype('float32')
 
-  for i in xrange(nRuns):
+  for i in range(nRuns):
     # new data every time, this is the worst case performance
     # real performance would be better, as the input data would not be completely random
     d = data[:,i]

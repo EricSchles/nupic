@@ -23,7 +23,7 @@
 
 CL_VERBOSITY = 0
 
-import cPickle as pickle
+import pickle as pickle
 import types
 import unittest2 as unittest
 
@@ -60,7 +60,7 @@ class CLAClassifierTest(unittest.TestCase):
 
     # Enough times to perform Inference and learn associations
     retval = []
-    for recordNum in xrange(10):
+    for recordNum in range(10):
       retval = self._compute(classifier, recordNum, [1, 5], 0, 10)
 
     self._checkValue(retval, 0, 10, 1.)
@@ -73,7 +73,7 @@ class CLAClassifierTest(unittest.TestCase):
 
     # Enough times to perform Inference and learn associations
     retval = []
-    for recordNum in xrange(10):
+    for recordNum in range(10):
       retval = self._compute(classifier, recordNum, [1, 5], 0, 10)
 
     self.assertEqual(retval['actualValues'][0], 10)
@@ -200,7 +200,7 @@ class CLAClassifierTest(unittest.TestCase):
                                               'actValue': None},
                               learn=True, infer=True)
     for value in predictResult['actualValues']:
-      self.assertIsInstance(value, (types.NoneType, types.StringType))
+      self.assertIsInstance(value, (type(None), bytes))
 
 
   def testComputeCategory2(self):
@@ -283,8 +283,8 @@ class CLAClassifierTest(unittest.TestCase):
     self.assertEqual(c1._learnIteration, c2._learnIteration)
     self.assertEqual(c1._recordNumMinusLearnIteration, c2._recordNumMinusLearnIteration)
     self.assertEqual(c1._patternNZHistory, c2._patternNZHistory)
-    self.assertEqual(c1._activeBitHistory.keys(), c2._activeBitHistory.keys())
-    for bit, nSteps in c1._activeBitHistory.keys():
+    self.assertEqual(list(c1._activeBitHistory.keys()), list(c2._activeBitHistory.keys()))
+    for bit, nSteps in list(c1._activeBitHistory.keys()):
       c1BitHistory = c1._activeBitHistory[(bit, nSteps)]
       c2BitHistory = c2._activeBitHistory[(bit, nSteps)]
       self.assertEqual(c1BitHistory._id, c2BitHistory._id)
@@ -293,7 +293,7 @@ class CLAClassifierTest(unittest.TestCase):
       self.assertEqual(c1BitHistory._learnIteration, c2BitHistory._learnIteration)
     self.assertEqual(c1._maxBucketIdx, c2._maxBucketIdx)
     self.assertEqual(len(c1._actualValues), len(c2._actualValues))
-    for i in xrange(len(c1._actualValues)):
+    for i in range(len(c1._actualValues)):
       self.assertAlmostEqual(c1._actualValues[i], c2._actualValues[i], 5)
     self.assertEqual(c1._version, c2._version)
     self.assertEqual(c1.verbosity, c2.verbosity)
@@ -307,9 +307,9 @@ class CLAClassifierTest(unittest.TestCase):
                          classification={'bucketIdx': 4, 'actValue': 34.7},
                          learn=True, infer=True)
 
-    self.assertEqual(result1.keys(), result2.keys())
-    for key in result1.keys():
-      for i in xrange(len(c1._actualValues)):
+    self.assertEqual(list(result1.keys()), list(result2.keys()))
+    for key in list(result1.keys()):
+      for i in range(len(c1._actualValues)):
         self.assertAlmostEqual(result1[key][i], result2[key][i], 5)
 
 
@@ -405,10 +405,10 @@ class CLAClassifierTest(unittest.TestCase):
     self.assertEqual(retval['actualValues'],
                      [0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
     self.assertAlmostEqual(retval[1][0], 1.0)
-    for i in xrange(1, 10):
+    for i in range(1, 10):
       self.assertAlmostEqual(retval[1][i], 0.0)
     self.assertAlmostEqual(retval[2][1], 1.0)
-    for i in [0] + range(2, 10):
+    for i in [0] + list(range(2, 10)):
       self.assertAlmostEqual(retval[2][i], 0.0)
 
 
@@ -529,8 +529,8 @@ class CLAClassifierTest(unittest.TestCase):
 
   def test_pFormatArray(self):
     from nupic.algorithms.CLAClassifier import _pFormatArray
-    pretty = _pFormatArray(range(10))
-    self.assertIsInstance(pretty, basestring)
+    pretty = _pFormatArray(list(range(10)))
+    self.assertIsInstance(pretty, str)
     self.assertEqual(pretty[0], "[")
     self.assertEqual(pretty[-1], "]")
     self.assertEqual(len(pretty.split(" ")), 12)
