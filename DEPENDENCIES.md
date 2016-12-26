@@ -15,6 +15,7 @@ This file declares all dependencies NuPIC has on third-party code, including the
 - SWiG ([Legal Talk](http://www.swig.org/legal.html))
 - type_traits ([License](https://github.com/numenta/nupic/blob/master/external/common/include/google/type_traits.h))
 - zlib ([License](https://github.com/numenta/nupic/blob/master/external/common/include/zlib.h))
+- capnp ([Cap'n Proto](https://capnproto.org/install.html))
 
 ## Python Dependencies Through Pip
 
