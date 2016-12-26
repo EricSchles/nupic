@@ -1,0 +1,20 @@
+src/kj/memory.lo: src/kj/memory.c++ src/kj/memory.h src/kj/common.h \
+  /Library/Developer/CommandLineTools/usr/bin/../lib/clang/8.0.0/include/stddef.h \
+  /Library/Developer/CommandLineTools/usr/bin/../lib/clang/8.0.0/include/__stddef_max_align_t.h \
+  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/initializer_list \
+  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config \
+  /Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/cstddef
+
+src/kj/memory.h:
+
+src/kj/common.h:
+
+/Library/Developer/CommandLineTools/usr/bin/../lib/clang/8.0.0/include/stddef.h:
+
+/Library/Developer/CommandLineTools/usr/bin/../lib/clang/8.0.0/include/__stddef_max_align_t.h:
+
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/initializer_list:
+
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/__config:
+
+/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1/cstddef:
